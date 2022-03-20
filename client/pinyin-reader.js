@@ -45,21 +45,19 @@ class PinyinReader {
         window.localStorage.setItem('text', text);
         const parts = this.getParts(text);
         const colors = ['#737cfa', '#737cfa', 'rgb(219, 144, 108)', 'rgb(224, 118, 107)', 'rgb(228, 93, 107)', 'rgb(233, 68, 106)'];
-        let result = '<div class="row">';
+        let result = '<div class="row"><div class="col sm">';
         parts.forEach(e=>{
             if(e.p) {
                 let tooltip = e.h? `[${e.p}](HSK${e.h}) ${e.d}`:`[${e.p}] ${e.d}`;
                 let color = e.h ? 'color: ' + colors[e.h] : '';
-                result += `<div class="col-sm charblock" >
-                <span class="label label-default" style="${color}" href="#" data-toggle="tooltip" data-placement="top" title="${tooltip}">${e.s}</span>
-                </div>`;
+                result += `
+                <span class="label label-defaul charblock" style="${color}" href="#" data-toggle="tooltip" data-placement="top" title="${tooltip}">${e.s}</span>
+                `;
             } else {
-                result += `<div class="col-sm charblock" >
-                <span class="label label-default">${e.s}</span>
-                </div>`;
+                result += `<span class="label label-default charblock">${e.s}</span>`;
             }
         });
-        result += '</div>';
+        result += '</div></div>';
         return result;
     }
 
