@@ -5,6 +5,7 @@
 .charblock {
     white-space: nowrap;
     font-size: x-large;
+    margin-left: 10px;
 }
 
 #editBtn {
