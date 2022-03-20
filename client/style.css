@@ -6,11 +6,20 @@
     white-space: nowrap;
     font-size: x-large;
     margin-left: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding: 3px;
 }
 
+.charblock:hover {
+    border: 2px solid rgb(150, 150, 173);
+    border-radius: 10px;
+}
 #editBtn {
     position: fixed;
-    bottom: 10px;
+    bottom: 0px;
     width: 100%;
     right: 0px;
 }
+
+  

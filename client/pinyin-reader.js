@@ -48,13 +48,14 @@ class PinyinReader {
         let result = '<div class="row"><div class="col sm">';
         parts.forEach(e=>{
             if(e.p) {
-                let tooltip = e.h? `[${e.p}](HSK${e.h}) ${e.d}`:`[${e.p}] ${e.d}`;
+                let tooltip = `<b>${e.p}</b><p>${e.d}</p>`;
+                if(e.h) tooltip += `<p>HSK${e.h}</p>`;
                 let color = e.h ? 'color: ' + colors[e.h] : '';
                 result += `
-                <span class="label label-defaul charblock" style="${color}" href="#" data-toggle="tooltip" data-placement="top" title="${tooltip}">${e.s}</span>
+                <span class="label label-defaul charblock" style="${color}" href="#" data-toggle="tooltip" data-html="true" data-placement="top" title="${tooltip}">${e.s}</span>
                 `;
             } else {
-                result += `<span class="label label-default charblock">${e.s}</span>`;
+                result += `<span class="label label-default">${e.s}</span>`;
             }
         });
         result += '</div></div>';
