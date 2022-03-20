@@ -4,7 +4,7 @@ class PinyinReader {
 
     init(callback) {
         this.text = window.localStorage.getItem('text');
-        if(!this.text) this.text = '很高兴认识你';
+        if(!this.text) this.text = '您好，这个应用程序可以帮助您学习中文。它允许您将文本翻译成带有相关翻译的拼音。';
         $.ajax({
             url: 'pinyin.json',
             datatype: 'json',
