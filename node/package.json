@@ -1,0 +1,27 @@
+{
+  "name": "pinyin-reader",
+  "version": "1.0.0",
+  "description": "Chinese to Pinyin reader",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ganaga/pinyin-reader.git"
+  },
+  "keywords": [
+    "pinyin"
+  ],
+  "author": "Ganaga",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ganaga/pinyin-reader/issues"
+  },
+  "homepage": "https://github.com/Ganaga/pinyin-reader#readme",
+  "dependencies": {
+    "express": "^4.17.3",
+    "parse-cc-cedict": "^2.1.0"
+  }
+}

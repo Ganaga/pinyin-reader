@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+      "outDir": "docs",
+      "noImplicitAny": true,
+      "module": "ESNext",
+      "target": "ESNext",
+      "jsx": "react",
+      "allowJs": true,
+      "moduleResolution": "node",
+      "lib": ["ESNext", "DOM"],
+      "strict": true,
+      "sourceMap": true,
+      "removeComments": false,
+      "alwaysStrict": true,
+      "suppressImplicitAnyIndexErrors": true
+    },
+    "include": ["src/**/*", "./src/custom.d.ts"]
+  }
+  
