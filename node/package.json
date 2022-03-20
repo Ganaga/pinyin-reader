@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/Ganaga/pinyin-reader#readme",
   "dependencies": {
+    "axios": "^0.26.1",
     "express": "^4.17.3",
     "parse-cc-cedict": "^2.1.0"
   }

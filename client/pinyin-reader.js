@@ -1,9 +1,10 @@
 class PinyinReader {
     constructor() {
-        this.specialWords = ['我', '了', '妳', '她', '它', '沒有', '是', '有', '他們', '自己'];
     }
 
     init(callback) {
+        this.text = window.localStorage.getItem('text');
+        if(!this.text) this.text = '很高兴认识你';
         $.ajax({
             url: 'pinyin.json',
             datatype: 'json',
@@ -41,14 +42,16 @@ class PinyinReader {
         return parts;
     }
     showResult(text) {
+        window.localStorage.setItem('text', text);
         const parts = this.getParts(text);
-
+        const colors = ['#737cfa', '#737cfa', 'rgb(219, 144, 108)', 'rgb(224, 118, 107)', 'rgb(228, 93, 107)', 'rgb(233, 68, 106)'];
         let result = '<div class="row">';
         parts.forEach(e=>{
             if(e.p) {
-                let tooltip = `${e.p}\n${e.d}`;
+                let tooltip = e.h? `[${e.p}](HSK${e.h}) ${e.d}`:`[${e.p}] ${e.d}`;
+                let color = e.h ? 'color: ' + colors[e.h] : '';
                 result += `<div class="col-sm charblock" >
-                <span class="label label-default" href="#" data-toggle="tooltip" data-placement="top" title="${tooltip}">${e.s}</span>
+                <span class="label label-default" style="${color}" href="#" data-toggle="tooltip" data-placement="top" title="${tooltip}">${e.s}</span>
                 </div>`;
             } else {
                 result += `<div class="col-sm charblock" >

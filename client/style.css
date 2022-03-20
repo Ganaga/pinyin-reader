@@ -5,3 +5,10 @@
     white-space: nowrap;
     font-size: x-large;
 }
+
+#editBtn {
+    position: fixed;
+    bottom: 10px;
+    width: 200px;
+    right: 10px;
+}

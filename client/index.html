@@ -14,45 +14,51 @@
 <body>
     <div class="container">
         <div class="row">
-            <div class="md-form">
+            <div id="editForm" class="md-form" style="display:none">
                 <div class="col">
-                    <textarea class="md-textarea form-control" id="textInput">苏州拙政园占地52000个平方，是江南古典园林个代表。俚搭苏州别个几只园子一道畀列到“世界文化遗产”名录里向，是苏州园林里向现存顶大个一只，分东、中、西、住宅四个部分。住宅是典型个苏州民居。
-
-                        东部明快开朗，主要是平冈远山、松林草坪、竹坞曲水了啥。
-                        
-                        中部是拙政园精华所在，池水面积占到{\displaystyle {\frac {1}{3}}}{\displaystyle {\frac {1}{3}}}，以水为主，池广树茂，景色自然，临水布置形体弗一、高低错落个建筑，主次分明。
-                        
-                        西部主体建筑是靠近住宅一侧个卅六鸳鸯馆，水池呈曲尺形，俚个特点是台馆分峙、回廊起伏，水波倒影，别有情趣，装饰华丽精美。</textarea>
-                </div>
-                <div class="col">
-                    <button type="button" id="parse" class="btn btn-primary disabled">Parse</button>
+                    <textarea class="md-textarea form-control" id="textInput"></textarea>
+                    <div class="col">
+                        <button type="button" id="parse" class="btn btn-primary disabled">Translate</button>
+                    </div>
                 </div>
             </div>
+            <div class="row">
+                <div id="result" class="col">
 
-        </div>
-        <div class="row">
-            <div id="result" class="col">
-
+                </div>
             </div>
+            <button type="button" id="editBtn" class="btn btn-primary" onclick="$('#editForm').show(200);$('#editBtn').hide()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil"
+                    viewBox="0 0 16 16">
+                    <path
+                        d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z">
+                    </path>
+                </svg>
+                Edit
+            </button>
         </div>
-    </div>
 </body>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"
     integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <!-- script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
     integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
     crossorigin="anonymous"></script -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+    crossorigin="anonymous"></script>
 <script src="./pinyin-reader.js"></script>
 <script>
     const pr = new PinyinReader();
     pr.init(() => {
-        $('#result').html(pr.showResult($('#textInput').val()));
+        $('#textInput').val(pr.text);
+        $('#result').html(pr.showResult(pr.text));
         $('[data-toggle="tooltip"]').tooltip();
     });
     $('#parse').click(() => {
         $('#result').html(pr.showResult($('#textInput').val()))
         $('[data-toggle="tooltip"]').tooltip();
+        $('#editForm').hide(100);
+        $('#editBtn').show(100);
     });
 </script>
 
