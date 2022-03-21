@@ -15,7 +15,13 @@
     border: 2px solid rgb(150, 150, 173);
     border-radius: 10px;
 }
+#parse {
+    width:100%
+}
 #editBtn {
+    width:100%
+}
+#bottom-stack {
     position: fixed;
     bottom: 0px;
     width: 100%;

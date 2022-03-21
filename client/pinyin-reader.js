@@ -5,6 +5,9 @@ class PinyinReader {
     init(callback) {
         this.text = window.localStorage.getItem('text');
         if(!this.text) this.text = '您好，这个应用程序可以帮助您学习中文。它允许您将文本翻译成带有相关翻译的拼音。';
+        const historyString = window.localStorage.getItem('history');
+        if(this.historyString) this.history = JSON.parse(history);
+        else this.history = [];
         $.ajax({
             url: 'pinyin.json',
             datatype: 'json',
@@ -42,7 +45,7 @@ class PinyinReader {
         return parts;
     }
     showResult(text) {
-        window.localStorage.setItem('text', text);
+        this.save(text);
         const parts = this.getParts(text);
         const colors = ['#737cfa', '#737cfa', 'rgb(219, 144, 108)', 'rgb(224, 118, 107)', 'rgb(228, 93, 107)', 'rgb(233, 68, 106)'];
         let result = '<div class="row"><div class="col sm">';
@@ -60,6 +63,17 @@ class PinyinReader {
         });
         result += '</div></div>';
         return result;
+    }
+    save(text) {
+        if(text && text.length > 0) {
+            window.localStorage.setItem('text', text);
+            let exists = false;
+            this.history.forEach(e=>{if(e===text) exists=true});
+            if(!exists) {
+                this.history.push(text);
+                window.localStorage.setItem('history', this.history);
+            }
+        }
     }
 
 }
