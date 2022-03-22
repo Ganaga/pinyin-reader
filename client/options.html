@@ -13,8 +13,24 @@
 
 <body>
     <div class="container">
-        <h5>Coming next..</h5>
-        <a href="index.html">Back</a>
+        <div class="row">
+            <div class="col">
+                <h5>Previous texts</h5>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <table class="table">
+                    <tbody id="tbody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <a href="index.html">Back</a>
+            </div>
+        </div>    
     </div>
 </body>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"
@@ -29,9 +45,13 @@
 <script>
     const pr = new PinyinReader();
     pr.init(() => {
-        
+        let html = '';
+        pr.history.forEach(h => {
+            html += `<tr><td class="truncate">${h.text}</td><td>${h.date}</td></tr>`;
+        });
+        $('#tbody').html(html);
     });
-    
+
 </script>
 
 </html>

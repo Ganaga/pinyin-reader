@@ -15,7 +15,19 @@ class PinyinReader {
                 this.dict = dict;
                 $('#parse').removeClass('disabled');
                 if(callback) callback();
-            }
+            },
+            xhr: function () {
+                var xhr = new window.XMLHttpRequest();
+                //Download progress
+                xhr.addEventListener("progress", function (evt) {
+                    if (evt.lengthComputable) {
+                        var percentComplete = evt.loaded / evt.total;
+                        const percent = (Math.round(percentComplete * 100) + "%");
+                        $('.progress-bar').css('width', percent)
+                    }
+                }, false);
+                return xhr;
+            },
         })
     }
     getParts(text) {
@@ -68,10 +80,12 @@ class PinyinReader {
         if(text && text.length > 0) {
             window.localStorage.setItem('text', text);
             let exists = false;
-            this.history.forEach(e=>{if(e===text) exists=true});
+            this.history.forEach(e=>{
+                if(e.text===text) exists=true;
+            });
             if(!exists) {
-                this.history.push(text);
-                window.localStorage.setItem('history', this.history);
+                this.history.push({text: text, date: Date.now()});
+                window.localStorage.setItem('history', JSON.stringify(this.history));
             }
         }
     }
