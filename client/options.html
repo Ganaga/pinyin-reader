@@ -46,11 +46,20 @@
     const pr = new PinyinReader();
     pr.init(() => {
         let html = '';
-        pr.history.forEach(h => {
-            html += `<tr><td class="truncate">${h.text}</td><td>${h.date}</td></tr>`;
+        pr.history.forEach(function(h,i) {
+            html += `
+            <tr>
+                <td class="truncate"><a href="#" onclick="load(${i})">${h.text}</a></td>
+                <td>${new Date(h.date).toLocaleString()}</td>
+            </tr>`;
         });
         $('#tbody').html(html);
     });
+
+    function load(index) {
+        pr.save(pr.history[index].text);
+        window.location.href = "index.html";
+    }
 
 </script>
 
