@@ -86,6 +86,16 @@
                 </div>
             </div>
 
+            <!-- Collection View (formerly History) -->
+            <div id="history-view" class="view-content">
+                <div class="history-container">
+                    <h5 class="view-title" data-i18n="collection">Collection</h5>
+                    <div id="history-list" class="history-list">
+                        <!-- Collection items will be dynamically loaded here -->
+                    </div>
+                </div>
+            </div>
+
             <!-- Library View (formerly Phrases) -->
             <div id="phrases-view" class="view-content">
                 <div class="phrases-container">
@@ -99,12 +109,51 @@
                 </div>
             </div>
 
-            <!-- Collection View (formerly History) -->
-            <div id="history-view" class="view-content">
-                <div class="history-container">
-                    <h5 class="view-title" data-i18n="collection">Collection</h5>
-                    <div id="history-list" class="history-list">
-                        <!-- Collection items will be dynamically loaded here -->
+            <!-- Help View -->
+            <div id="help-view" class="view-content">
+                <div class="help-container">
+                    <h5 class="view-title" data-i18n="helpTitle">How to Use Pinyin Reader</h5>
+
+                    <div class="help-section">
+                        <p class="help-intro" data-i18n="helpIntro">Pinyin Reader helps you learn Chinese by automatically converting text to Pinyin with tones and definitions.</p>
+                    </div>
+
+                    <div class="help-section">
+                        <h6 data-i18n="helpReadingTitle">📖 Reading View</h6>
+                        <p data-i18n="helpReadingDesc">Displays your Chinese text with Pinyin pronunciation and word definitions. Hover over characters to see details.</p>
+                    </div>
+
+                    <div class="help-section">
+                        <h6 data-i18n="helpEditTitle">✏️ Edit View</h6>
+                        <p data-i18n="helpEditDesc">Enter or paste Chinese text. Use Pinyin Mode to type Chinese characters using pinyin input (e.g., ni3hao3 → 你好).</p>
+                    </div>
+
+                    <div class="help-section">
+                        <h6 data-i18n="helpCollectionTitle">💾 Collection</h6>
+                        <p data-i18n="helpCollectionDesc">Save your favorite texts for later. View or delete saved items.</p>
+                    </div>
+
+                    <div class="help-section">
+                        <h6 data-i18n="helpLibraryTitle">📚 Library</h6>
+                        <p data-i18n="helpLibraryDesc">Browse pre-built dialogues organized by HSK level. Click phrases to view them in Reading mode.</p>
+                    </div>
+
+                    <div class="help-section">
+                        <h6 data-i18n="helpFeaturesTitle">Key Features</h6>
+                        <ul class="help-features">
+                            <li data-i18n="helpFeature1">HSK level color coding for difficulty</li>
+                            <li data-i18n="helpFeature2">Offline support (PWA)</li>
+                            <li data-i18n="helpFeature3">Auto-load from clipboard</li>
+                            <li data-i18n="helpFeature4">Bilingual interface (EN/FR)</li>
+                        </ul>
+                    </div>
+
+                    <div class="help-section help-github">
+                        <h6 data-i18n="helpGithubTitle">Open Source</h6>
+                        <p data-i18n="helpGithubDesc">This project is open source. Contribute or report issues on GitHub:</p>
+                        <a href="https://github.com/Ganaga/pinyin-reader" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+                            <i class="bi bi-github"></i> <span data-i18n="helpGithubLink">View on GitHub</span>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -121,17 +170,17 @@
                 <i class="bi bi-pencil-square"></i>
                 <span data-i18n="editView">Edit</span>
             </button>
-            <button class="nav-item" data-view="phrases-view">
-                <i class="bi bi-book"></i>
-                <span data-i18n="libraryView">Library</span>
-            </button>
             <button class="nav-item" data-view="history-view">
                 <i class="bi bi-bookmark-heart"></i>
                 <span data-i18n="collectionView">Collection</span>
             </button>
-            <button class="nav-item" id="languageToggle">
-                <i class="bi bi-translate"></i>
-                <span id="currentLanguage">EN</span>
+            <button class="nav-item" data-view="phrases-view">
+                <i class="bi bi-book"></i>
+                <span data-i18n="libraryView">Library</span>
+            </button>
+            <button class="nav-item" data-view="help-view">
+                <i class="bi bi-question-circle"></i>
+                <span data-i18n="helpView">Help</span>
             </button>
         </nav>
     </div>

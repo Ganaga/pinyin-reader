@@ -367,7 +367,7 @@ body {
     color: #999;
 }
 
-/* History View */
+/* Collection View */
 .history-container {
     display: flex;
     flex-direction: column;
@@ -504,6 +504,75 @@ body {
     margin-bottom: 15px;
     display: block;
     opacity: 0.3;
+}
+
+/* Help View */
+.help-container {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 10px;
+}
+
+.help-section {
+    background: white;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 15px;
+}
+
+.help-intro {
+    font-size: 1.05rem;
+    color: #555;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.help-section h6 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: #333;
+    margin: 0 0 10px 0;
+}
+
+.help-section p {
+    color: #666;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.help-features {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0 0 0;
+}
+
+.help-features li {
+    color: #666;
+    padding: 8px 0;
+    padding-left: 25px;
+    position: relative;
+}
+
+.help-features li:before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: #737cfa;
+    font-weight: bold;
+}
+
+.help-github {
+    text-align: center;
+}
+
+.help-github .btn {
+    margin-top: 15px;
+    padding: 12px 30px;
+    font-size: 1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
 }
 
 /* Bottom Navigation */

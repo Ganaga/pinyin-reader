@@ -11,8 +11,9 @@ const translations = {
     // Views
     readingView: 'Reading',
     editView: 'Edit',
-    libraryView: 'Library',
     collectionView: 'Collection',
+    libraryView: 'Library',
+    helpView: 'Help',
 
     // Reading view
     addToCollection: 'Add to Collection',
@@ -63,7 +64,27 @@ const translations = {
     // Accessibility
     closeTooltip: 'Close tooltip',
     expandCategory: 'Expand category',
-    collapseCategory: 'Collapse category'
+    collapseCategory: 'Collapse category',
+
+    // Help view
+    helpTitle: 'How to Use Pinyin Reader',
+    helpIntro: 'Pinyin Reader helps you learn Chinese by automatically converting text to Pinyin with tones and definitions.',
+    helpReadingTitle: '📖 Reading View',
+    helpReadingDesc: 'Displays your Chinese text with Pinyin pronunciation and word definitions. Hover over characters to see details.',
+    helpEditTitle: '✏️ Edit View',
+    helpEditDesc: 'Enter or paste Chinese text. Use Pinyin Mode to type Chinese characters using pinyin input (e.g., ni3hao3 → 你好).',
+    helpCollectionTitle: '💾 Collection',
+    helpCollectionDesc: 'Save your favorite texts for later. View or delete saved items.',
+    helpLibraryTitle: '📚 Library',
+    helpLibraryDesc: 'Browse pre-built dialogues organized by HSK level. Click phrases to view them in Reading mode.',
+    helpFeaturesTitle: 'Key Features',
+    helpFeature1: 'HSK level color coding for difficulty',
+    helpFeature2: 'Offline support (PWA)',
+    helpFeature3: 'Auto-load from clipboard',
+    helpFeature4: 'Bilingual interface (EN/FR)',
+    helpGithubTitle: 'Open Source',
+    helpGithubDesc: 'This project is open source. Contribute or report issues on GitHub:',
+    helpGithubLink: 'View on GitHub'
   },
 
   fr: {
@@ -73,8 +94,9 @@ const translations = {
     // Views
     readingView: 'Lecture',
     editView: 'Éditer',
-    libraryView: 'Librairie',
     collectionView: 'Collection',
+    libraryView: 'Librairie',
+    helpView: 'Aide',
 
     // Reading view
     addToCollection: 'Ajouter à la collection',
@@ -125,14 +147,37 @@ const translations = {
     // Accessibility
     closeTooltip: 'Fermer l\'info-bulle',
     expandCategory: 'Développer la catégorie',
-    collapseCategory: 'Réduire la catégorie'
+    collapseCategory: 'Réduire la catégorie',
+
+    // Help view
+    helpTitle: 'Comment utiliser Pinyin Reader',
+    helpIntro: 'Pinyin Reader vous aide à apprendre le chinois en convertissant automatiquement le texte en Pinyin avec les tons et les définitions.',
+    helpReadingTitle: '📖 Vue Lecture',
+    helpReadingDesc: 'Affiche votre texte chinois avec la prononciation Pinyin et les définitions des mots. Survolez les caractères pour voir les détails.',
+    helpEditTitle: '✏️ Vue Éditer',
+    helpEditDesc: 'Saisissez ou collez du texte chinois. Utilisez le Mode Pinyin pour taper des caractères chinois en pinyin (ex: ni3hao3 → 你好).',
+    helpCollectionTitle: '💾 Collection',
+    helpCollectionDesc: 'Enregistrez vos textes favoris pour plus tard. Consultez ou supprimez les éléments sauvegardés.',
+    helpLibraryTitle: '📚 Librairie',
+    helpLibraryDesc: 'Parcourez les dialogues pré-construits organisés par niveau HSK. Cliquez sur les phrases pour les voir en mode Lecture.',
+    helpFeaturesTitle: 'Fonctionnalités clés',
+    helpFeature1: 'Code couleur par niveau HSK pour la difficulté',
+    helpFeature2: 'Support hors ligne (PWA)',
+    helpFeature3: 'Chargement automatique depuis le presse-papiers',
+    helpFeature4: 'Interface bilingue (EN/FR)',
+    helpGithubTitle: 'Open Source',
+    helpGithubDesc: 'Ce projet est open source. Contribuez ou signalez des problèmes sur GitHub :',
+    helpGithubLink: 'Voir sur GitHub'
   }
 };
 
 class I18n {
   constructor() {
-    // Default to English
-    this.currentLanguage = localStorage.getItem('language') || 'en';
+    // Auto-detect browser language
+    // Check if browser language is French, otherwise default to English
+    const browserLang = navigator.language || navigator.userLanguage;
+    const isFrench = browserLang.toLowerCase().startsWith('fr');
+    this.currentLanguage = isFrench ? 'fr' : 'en';
   }
 
   /**
@@ -151,7 +196,6 @@ class I18n {
   setLanguage(lang) {
     if (translations[lang]) {
       this.currentLanguage = lang;
-      localStorage.setItem('language', lang);
       this.updateUI();
     }
   }
