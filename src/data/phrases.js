@@ -1,7 +1,8 @@
 // Built-in Chinese phrases organized by HSK level with dialogues
 export const BUILT_IN_PHRASES = {
     "hsk1": {
-        "title": "HSK 1 - Dialogues débutants",
+        "titleEn": "HSK 1 - Beginner Dialogues",
+        "titleFr": "HSK 1 - Dialogues débutants",
         "icon": "📘",
         "phrases": [
             { zh: "你好！我叫李明。你叫什么名字？", fr: "Bonjour ! Je m'appelle Li Ming. Comment tu t'appelles ?", en: "Hello! My name is Li Ming. What's your name?" },
@@ -22,7 +23,8 @@ export const BUILT_IN_PHRASES = {
         ]
     },
     "hsk2": {
-        "title": "HSK 2 - Dialogues élémentaires",
+        "titleEn": "HSK 2 - Elementary Dialogues",
+        "titleFr": "HSK 2 - Dialogues élémentaires",
         "icon": "📗",
         "phrases": [
             { zh: "你昨天去哪儿了？我去超市买东西了。", fr: "Où es-tu allé hier ? Je suis allé au supermarché faire des courses.", en: "Where did you go yesterday? I went to the supermarket to shop." },
@@ -42,7 +44,8 @@ export const BUILT_IN_PHRASES = {
         ]
     },
     "hsk3": {
-        "title": "HSK 3 - Dialogues intermédiaires",
+        "titleEn": "HSK 3 - Intermediate Dialogues",
+        "titleFr": "HSK 3 - Dialogues intermédiaires",
         "icon": "📙",
         "phrases": [
             { zh: "你好像有点儿不舒服，怎么了？我昨晚没睡好，有点儿头疼。", fr: "Tu as l'air un peu mal à l'aise, qu'est-ce qui ne va pas ? Je n'ai pas bien dormi hier soir, j'ai un peu mal à la tête.", en: "You seem a bit uncomfortable, what's wrong? I didn't sleep well last night, I have a bit of a headache." },
@@ -60,7 +63,8 @@ export const BUILT_IN_PHRASES = {
         ]
     },
     "hsk4": {
-        "title": "HSK 4 - Dialogues avancés",
+        "titleEn": "HSK 4 - Advanced Dialogues",
+        "titleFr": "HSK 4 - Dialogues avancés",
         "icon": "📕",
         "phrases": [
             { zh: "你在这个公司工作多长时间了？已经五年了，时间过得真快。", fr: "Depuis combien de temps travailles-tu dans cette entreprise ? Ça fait déjà cinq ans, le temps passe vraiment vite.", en: "How long have you been working at this company? It's been five years already, time really flies." },
@@ -76,7 +80,8 @@ export const BUILT_IN_PHRASES = {
         ]
     },
     "hsk5": {
-        "title": "HSK 5 - Dialogues supérieurs",
+        "titleEn": "HSK 5 - Superior Dialogues",
+        "titleFr": "HSK 5 - Dialogues supérieurs",
         "icon": "📔",
         "phrases": [
             { zh: "在当今社会，环境保护已经成为一个刻不容缓的问题。确实如此，我们每个人都应该承担起相应的责任。", fr: "Dans la société actuelle, la protection de l'environnement est devenue une question urgente. C'est vrai, chacun de nous devrait assumer ses responsabilités.", en: "In today's society, environmental protection has become an urgent issue. Indeed, each of us should take on corresponding responsibilities." },
@@ -90,7 +95,8 @@ export const BUILT_IN_PHRASES = {
         ]
     },
     "hsk6": {
-        "title": "HSK 6 - Dialogues experts",
+        "titleEn": "HSK 6 - Expert Dialogues",
+        "titleFr": "HSK 6 - Dialogues experts",
         "icon": "📓",
         "phrases": [
             { zh: "从历史的角度来看，任何一个文明的兴衰都与其制度创新能力密切相关。这一观点在当代社会依然具有重要的现实意义。", fr: "D'un point de vue historique, la montée et la chute de toute civilisation sont étroitement liées à sa capacité d'innovation institutionnelle. Ce point de vue a toujours une signification pratique importante dans la société contemporaine.", en: "From a historical perspective, the rise and fall of any civilization is closely related to its institutional innovation capability. This viewpoint still has important practical significance in contemporary society." },
@@ -103,7 +109,8 @@ export const BUILT_IN_PHRASES = {
         ]
     },
     "quotidien": {
-        "title": "Situations quotidiennes",
+        "titleEn": "Daily Situations",
+        "titleFr": "Situations quotidiennes",
         "icon": "🏠",
         "phrases": [
             { zh: "早上好！你昨晚睡得好吗？", fr: "Bonjour ! As-tu bien dormi hier soir ?", en: "Good morning! Did you sleep well last night?" },
@@ -114,7 +121,8 @@ export const BUILT_IN_PHRASES = {
         ]
     },
     "urgence": {
-        "title": "Situations d'urgence",
+        "titleEn": "Emergency Situations",
+        "titleFr": "Situations d'urgence",
         "icon": "🚨",
         "phrases": [
             { zh: "救命！快来人帮帮我！", fr: "Au secours ! Quelqu'un, aidez-moi vite !", en: "Help! Someone, help me quickly!" },

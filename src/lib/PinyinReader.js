@@ -4,6 +4,7 @@
  */
 import { BUILT_IN_PHRASES } from '../data/phrases.js';
 import { initTooltips } from '../utils/bootstrap-utils.js';
+import { i18n } from '../utils/i18n.js';
 
 export class PinyinReader {
     constructor() {
@@ -230,7 +231,7 @@ export class PinyinReader {
                 <div class="phrase-category" data-category="${categoryKey}">
                     <div class="category-header collapsed" data-category-key="${categoryKey}">
                         <span class="icon">${category.icon}</span>
-                        <span>${category.title}</span>
+                        <span>${category['title' + i18n.getLanguage().charAt(0).toUpperCase() + i18n.getLanguage().slice(1)] || category.titleEn}</span>
                         <i class="bi bi-chevron-down toggle-icon"></i>
                     </div>
                     <div class="category-phrases collapsed" id="category-${categoryKey}">
@@ -239,11 +240,10 @@ export class PinyinReader {
                                 <div class="phrase-content">
                                     <div class="phrase-zh">${phrase.zh}</div>
                                     <div class="phrase-translations">
-                                        <div class="phrase-fr">${phrase.fr}</div>
-                                        <div class="phrase-en">${phrase.en}</div>
+                                        <div class="phrase-translation">${phrase[i18n.getLanguage()] || phrase.en}</div>
                                     </div>
                                 </div>
-                                <button class="btn btn-sm btn-outline-primary add-to-collection" data-phrase="${phrase.zh.replace(/"/g, '&quot;').replace(/'/g, '&#39;')}" title="Ajouter à la collection">
+                                <button class="btn btn-sm btn-outline-primary add-to-collection" data-phrase="${phrase.zh.replace(/"/g, '&quot;').replace(/'/g, '&#39;')}" title="${i18n.t('addToCollection')}">
                                     <i class="bi bi-bookmark-plus"></i>
                                 </button>
                             </div>
@@ -375,8 +375,8 @@ export class PinyinReader {
             container.innerHTML = `
                 <div class="empty-state">
                     <i class="bi bi-bookmark-heart"></i>
-                    <p>Aucun élément dans la collection</p>
-                    <small>Ajoutez des phrases depuis la Librairie</small>
+                    <p data-i18n="emptyCollection">${i18n.t('emptyCollection')}</p>
+                    <small data-i18n="emptyCollectionDesc">${i18n.t('emptyCollectionDesc')}</small>
                 </div>
             `;
             return;
@@ -402,10 +402,10 @@ export class PinyinReader {
                         <div class="collection-date">${dateStr}</div>
                     </div>
                     <div class="collection-actions">
-                        <button class="btn btn-sm btn-primary collection-view" data-view-index="${index}" title="Voir">
+                        <button class="btn btn-sm btn-primary collection-view" data-view-index="${index}" title="${i18n.t('view')}">
                             <i class="bi bi-eye"></i>
                         </button>
-                        <button class="btn btn-sm btn-outline-danger collection-delete" data-delete-index="${index}" title="Supprimer">
+                        <button class="btn btn-sm btn-outline-danger collection-delete" data-delete-index="${index}" title="${i18n.t('delete')}">
                             <i class="bi bi-trash"></i>
                         </button>
                     </div>
@@ -568,7 +568,7 @@ export class PinyinReader {
         const suggestions = this.searchByPinyin(pinyinQuery);
 
         if (suggestions.length === 0) {
-            container.innerHTML = '<div class="no-suggestions">Aucun caractère trouvé pour ce pinyin</div>';
+            container.innerHTML = `<div class="no-suggestions">${i18n.t('noSuggestions')}</div>`;
             return;
         }
 
@@ -651,7 +651,7 @@ export class PinyinReader {
                 section.style.overflow = '';
                 section.style.transition = '';
             }, 200);
-            button.innerHTML = '<i class="bi bi-keyboard"></i> Mode Pinyin';
+            button.innerHTML = `<i class="bi bi-keyboard"></i> <span data-i18n="pinyinMode">${i18n.t('pinyinMode')}</span>`;
         } else {
             // Slide down
             section.style.display = 'block';
@@ -669,7 +669,7 @@ export class PinyinReader {
                 const pinyinInput = document.getElementById('pinyinInput');
                 if (pinyinInput) pinyinInput.focus();
             }, 200);
-            button.innerHTML = '<i class="bi bi-x-circle"></i> Fermer';
+            button.innerHTML = `<i class="bi bi-x-circle"></i> <span data-i18n="clear">${i18n.t('clear')}</span>`;
         }
     }
 

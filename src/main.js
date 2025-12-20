@@ -10,6 +10,19 @@ import './style.css';
 // Import application code
 import { PinyinReader } from './lib/PinyinReader.js';
 import { initTooltips } from './utils/bootstrap-utils.js';
+import { i18n } from './utils/i18n.js';
+
+// Initialize i18n and update UI
+i18n.updateUI();
+
+// Update language indicator
+const updateLanguageIndicator = () => {
+    const languageSpan = document.getElementById('currentLanguage');
+    if (languageSpan) {
+        languageSpan.textContent = i18n.getLanguage().toUpperCase();
+    }
+};
+updateLanguageIndicator();
 
 // Initialize the application
 const pr = new PinyinReader();
@@ -133,6 +146,28 @@ if (pinyinInput) {
         }
     });
 }
+
+// Language toggle
+const languageToggle = document.getElementById('languageToggle');
+if (languageToggle) {
+    languageToggle.addEventListener('click', () => {
+        const newLang = i18n.getLanguage() === 'en' ? 'fr' : 'en';
+        i18n.setLanguage(newLang);
+        updateLanguageIndicator();
+    });
+}
+
+// Listen for language changes to update dynamic content
+window.addEventListener('languageChanged', () => {
+    // Reload phrases with new language
+    if (pr && typeof pr.loadPhrases === 'function') {
+        pr.loadPhrases();
+    }
+    // Reload collection with new language
+    if (pr && typeof pr.loadCollection === 'function') {
+        pr.loadCollection();
+    }
+});
 
 // Register Service Worker for PWA
 if ('serviceWorker' in navigator) {

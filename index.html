@@ -28,13 +28,13 @@
     <!-- Manifest -->
     <link rel="manifest" href="/pinyin-reader/manifest.json">
 
-    <title>Pinyin Reader - Lecteur de Chinois</title>
+    <title>Pinyin Reader - Chinese Reader</title>
 </head>
 
 <body>
     <div class="container">
         <div id="loader">
-            <span>Loading...</span>
+            <span data-i18n="loading">Loading...</span>
             <div class="progress">
                 <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
@@ -46,8 +46,8 @@
             <!-- Reading View (default) -->
             <div id="result-view" class="view-content active">
                 <div class="reading-header">
-                    <button id="addCurrentToCollection" class="btn btn-sm btn-outline-primary" style="display:none;" title="Ajouter à la collection">
-                        <i class="bi bi-bookmark-plus"></i> Ajouter à la collection
+                    <button id="addCurrentToCollection" class="btn btn-sm btn-outline-primary" style="display:none;">
+                        <i class="bi bi-bookmark-plus"></i> <span data-i18n="addToCollection">Add to Collection</span>
                     </button>
                 </div>
                 <div id="result" class="result-container"></div>
@@ -56,31 +56,31 @@
             <!-- Edit View -->
             <div id="edit-view" class="view-content">
                 <div class="edit-container">
-                    <h5 class="view-title">Nouveau texte</h5>
+                    <h5 class="view-title" data-i18n="newText">New Text</h5>
 
                     <!-- Pinyin Input Tool -->
                     <div class="pinyin-input-tool">
                         <div class="input-mode-toggle">
                             <button type="button" id="toggleInputMode" class="btn btn-sm btn-outline-primary">
-                                <i class="bi bi-keyboard"></i> Mode Pinyin
+                                <i class="bi bi-keyboard"></i> <span data-i18n="pinyinMode">Pinyin Mode</span>
                             </button>
                         </div>
 
                         <div id="pinyinInputSection" class="pinyin-section" style="display:none">
-                            <label class="form-label">Saisissez en pinyin (ex: ni3hao3)</label>
-                            <input type="text" class="form-control" id="pinyinInput"
-                                   placeholder="Tapez en pinyin avec les tons (1-4)...">
+                            <label class="form-label" data-i18n="pinyinLabel">Enter in pinyin (e.g., ni3hao3)</label>
+                            <input type="text" class="form-control" id="pinyinInput" data-i18n="pinyinPlaceholder"
+                                   placeholder="Type in pinyin with tones (1-4)...">
                             <div id="pinyinSuggestions" class="pinyin-suggestions"></div>
                         </div>
                     </div>
 
-                    <textarea class="form-control" id="textInput" placeholder="Saisissez votre texte chinois ici..."></textarea>
+                    <textarea class="form-control" id="textInput" data-i18n="textPlaceholder" placeholder="Enter your Chinese text here..."></textarea>
                     <div class="button-group">
                         <button type="button" id="clearBtn" class="btn btn-outline-secondary">
-                            <i class="bi bi-x-circle"></i> Effacer
+                            <i class="bi bi-x-circle"></i> <span data-i18n="clear">Clear</span>
                         </button>
                         <button type="button" id="parse" class="btn btn-primary disabled">
-                            <i class="bi bi-translate"></i> Traduire
+                            <i class="bi bi-translate"></i> <span data-i18n="translate">Translate</span>
                         </button>
                     </div>
                 </div>
@@ -89,9 +89,9 @@
             <!-- Library View (formerly Phrases) -->
             <div id="phrases-view" class="view-content">
                 <div class="phrases-container">
-                    <h5 class="view-title">Librairie</h5>
+                    <h5 class="view-title" data-i18n="library">Library</h5>
                     <div class="search-box">
-                        <input type="text" class="form-control" id="phraseSearch" placeholder="🔍 Rechercher...">
+                        <input type="text" class="form-control" id="phraseSearch" data-i18n="search" placeholder="🔍 Search...">
                     </div>
                     <div id="phrases-list" class="phrases-list">
                         <!-- Phrases will be dynamically loaded here -->
@@ -102,7 +102,7 @@
             <!-- Collection View (formerly History) -->
             <div id="history-view" class="view-content">
                 <div class="history-container">
-                    <h5 class="view-title">Collection</h5>
+                    <h5 class="view-title" data-i18n="collection">Collection</h5>
                     <div id="history-list" class="history-list">
                         <!-- Collection items will be dynamically loaded here -->
                     </div>
@@ -115,19 +115,23 @@
         <nav id="bottom-nav" class="bottom-navigation" style="display:none">
             <button class="nav-item active" data-view="result-view">
                 <i class="bi bi-eye"></i>
-                <span>Lecture</span>
+                <span data-i18n="readingView">Reading</span>
             </button>
             <button class="nav-item" data-view="edit-view">
                 <i class="bi bi-pencil-square"></i>
-                <span>Éditer</span>
+                <span data-i18n="editView">Edit</span>
             </button>
             <button class="nav-item" data-view="phrases-view">
                 <i class="bi bi-book"></i>
-                <span>Librairie</span>
+                <span data-i18n="libraryView">Library</span>
             </button>
             <button class="nav-item" data-view="history-view">
                 <i class="bi bi-bookmark-heart"></i>
-                <span>Collection</span>
+                <span data-i18n="collectionView">Collection</span>
+            </button>
+            <button class="nav-item" id="languageToggle">
+                <i class="bi bi-translate"></i>
+                <span id="currentLanguage">EN</span>
             </button>
         </nav>
     </div>
