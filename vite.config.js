@@ -5,12 +5,11 @@ import { copyFileSync, mkdirSync } from 'fs';
 export default defineConfig({
   base: '/pinyin-reader/',  // GitHub Pages path
 
-  // Multi-page app configuration
+  // Build configuration
   build: {
     rollupOptions: {
       input: {
-        main: resolve(__dirname, 'index.html'),
-        options: resolve(__dirname, 'options.html')
+        main: resolve(__dirname, 'index.html')
       }
     },
     // Increase chunk size warning limit due to large pinyin.json
