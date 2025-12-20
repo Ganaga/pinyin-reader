@@ -11,7 +11,8 @@ export class PinyinReader {
         this.allPhrases = [];
         this.dict = null;
         this.text = '';
-        this.history = [];
+        this.history = []; // Deprecated - kept for backward compatibility
+        this.collection = []; // New: user's saved collection
         this.tooltips = [];
     }
 
@@ -20,22 +21,34 @@ export class PinyinReader {
      * @param {Function} callback - Called when dictionary is loaded
      */
     async init(callback) {
-        // Load text and history from localStorage
+        // Load text and collection from localStorage
         this.text = window.localStorage.getItem('text');
         if (!this.text) {
             this.text = '您好，这个应用程序可以帮助您学习中文。它允许您将文本翻译成带有相关翻译的拼音。';
         }
 
-        const historyString = window.localStorage.getItem('history');
-        if (historyString) {
-            this.history = JSON.parse(historyString);
+        // Load collection (new storage key)
+        const collectionString = window.localStorage.getItem('collection');
+        if (collectionString) {
+            this.collection = JSON.parse(collectionString);
         } else {
-            this.history = [];
+            this.collection = [];
         }
+
+        // Migrate old history to collection if exists
+        const historyString = window.localStorage.getItem('history');
+        if (historyString && this.collection.length === 0) {
+            this.history = JSON.parse(historyString);
+            this.collection = this.history; // Migrate
+            window.localStorage.setItem('collection', JSON.stringify(this.collection));
+        }
+
+        // Try to read from clipboard on startup
+        await this.tryLoadFromClipboard();
 
         // Load dictionary with progress tracking
         try {
-            const response = await fetch('/pinyin.json');
+            const response = await fetch('/pinyin-reader/pinyin.json');
             const contentLength = response.headers.get('content-length');
             const total = parseInt(contentLength, 10);
             const reader = response.body.getReader();
@@ -142,6 +155,10 @@ export class PinyinReader {
             }
         });
         result += '</div></div>';
+
+        // Update "Add to Collection" button visibility
+        this.updateAddToCollectionButton();
+
         return result;
     }
 
@@ -219,11 +236,16 @@ export class PinyinReader {
                     <div class="category-phrases collapsed" id="category-${categoryKey}">
                         ${category.phrases.map(phrase => `
                             <div class="phrase-item" data-phrase="${phrase.zh.replace(/"/g, '&quot;').replace(/'/g, '&#39;')}">
-                                <div class="phrase-zh">${phrase.zh}</div>
-                                <div class="phrase-translations">
-                                    <div class="phrase-fr">${phrase.fr}</div>
-                                    <div class="phrase-en">${phrase.en}</div>
+                                <div class="phrase-content">
+                                    <div class="phrase-zh">${phrase.zh}</div>
+                                    <div class="phrase-translations">
+                                        <div class="phrase-fr">${phrase.fr}</div>
+                                        <div class="phrase-en">${phrase.en}</div>
+                                    </div>
                                 </div>
+                                <button class="btn btn-sm btn-outline-primary add-to-collection" data-phrase="${phrase.zh.replace(/"/g, '&quot;').replace(/'/g, '&#39;')}" title="Ajouter à la collection">
+                                    <i class="bi bi-bookmark-plus"></i>
+                                </button>
                             </div>
                         `).join('')}
                     </div>
@@ -240,11 +262,20 @@ export class PinyinReader {
             });
         });
 
-        // Add event listeners for phrase items
-        document.querySelectorAll('.phrase-item').forEach(item => {
-            item.addEventListener('click', (e) => {
-                const text = item.dataset.phrase;
+        // Add event listeners for phrase items (click on content area)
+        document.querySelectorAll('.phrase-item .phrase-content').forEach(content => {
+            content.addEventListener('click', (e) => {
+                const text = content.parentElement.dataset.phrase;
                 this.selectPhrase(text);
+            });
+        });
+
+        // Add event listeners for "Add to Collection" buttons
+        document.querySelectorAll('.add-to-collection').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation(); // Prevent triggering phrase selection
+                const text = btn.dataset.phrase;
+                this.addToCollection(text);
             });
         });
     }
@@ -332,28 +363,29 @@ export class PinyinReader {
     }
 
     /**
-     * Load history into the history view
+     * Load collection into the collection view
      */
-    loadHistory() {
+    loadCollection() {
         const container = document.getElementById('history-list');
         if (!container) return;
 
         container.innerHTML = '';
 
-        if (!this.history || this.history.length === 0) {
+        if (!this.collection || this.collection.length === 0) {
             container.innerHTML = `
                 <div class="empty-state">
-                    <i class="bi bi-clock-history"></i>
-                    <p>Aucun historique disponible</p>
+                    <i class="bi bi-bookmark-heart"></i>
+                    <p>Aucun élément dans la collection</p>
+                    <small>Ajoutez des phrases depuis la Librairie</small>
                 </div>
             `;
             return;
         }
 
-        // Sort history by date (most recent first)
-        const sortedHistory = [...this.history].sort((a, b) => b.date - a.date);
+        // Sort collection by date (most recent first)
+        const sortedCollection = [...this.collection].sort((a, b) => b.date - a.date);
 
-        sortedHistory.forEach((item, index) => {
+        sortedCollection.forEach((item, index) => {
             const date = new Date(item.date);
             const dateStr = date.toLocaleDateString('fr-FR', {
                 day: 'numeric',
@@ -363,37 +395,47 @@ export class PinyinReader {
                 minute: '2-digit'
             });
 
-            const historyHtml = `
-                <div class="history-item" data-history-index="${index}">
-                    <button class="history-delete" data-delete-index="${index}">
-                        <i class="bi bi-trash"></i>
-                    </button>
-                    <div class="history-text">${item.text}</div>
-                    <div class="history-date">${dateStr}</div>
+            const collectionHtml = `
+                <div class="collection-item" data-collection-index="${index}">
+                    <div class="collection-content">
+                        <div class="collection-text">${item.text}</div>
+                        <div class="collection-date">${dateStr}</div>
+                    </div>
+                    <div class="collection-actions">
+                        <button class="btn btn-sm btn-primary collection-view" data-view-index="${index}" title="Voir">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger collection-delete" data-delete-index="${index}" title="Supprimer">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </div>
                 </div>
             `;
-            container.insertAdjacentHTML('beforeend', historyHtml);
+            container.insertAdjacentHTML('beforeend', collectionHtml);
         });
 
-        // Add event listeners for history items
-        document.querySelectorAll('.history-item').forEach(item => {
-            item.addEventListener('click', (e) => {
-                // Don't trigger if delete button was clicked
-                if (!e.target.closest('.history-delete')) {
-                    const index = parseInt(item.dataset.historyIndex, 10);
-                    this.selectHistory(index);
-                }
+        // Add event listeners for "View" buttons
+        document.querySelectorAll('.collection-view').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const index = parseInt(btn.dataset.viewIndex, 10);
+                this.viewCollectionItem(index);
             });
         });
 
-        // Add event listeners for delete buttons
-        document.querySelectorAll('.history-delete').forEach(btn => {
+        // Add event listeners for "Delete" buttons
+        document.querySelectorAll('.collection-delete').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 const index = parseInt(btn.dataset.deleteIndex, 10);
-                this.deleteHistory(index);
+                this.deleteFromCollection(index);
             });
         });
+    }
+
+    // Backward compatibility alias
+    loadHistory() {
+        this.loadCollection();
     }
 
     /**
@@ -628,6 +670,160 @@ export class PinyinReader {
                 if (pinyinInput) pinyinInput.focus();
             }, 200);
             button.innerHTML = '<i class="bi bi-x-circle"></i> Fermer';
+        }
+    }
+
+    /**
+     * Add text to collection
+     * @param {string} text - Text to add to collection
+     */
+    addToCollection(text) {
+        if (!text || text.trim().length === 0) return;
+
+        // Check if already in collection
+        const exists = this.collection.some(item => item.text === text);
+        if (exists) {
+            // Show feedback (could use a toast notification)
+            console.log('Item already in collection');
+            // TODO: Add visual feedback
+            return;
+        }
+
+        // Add to collection
+        const item = {
+            text: text,
+            date: Date.now()
+        };
+        this.collection.unshift(item); // Add to beginning
+
+        // Save to localStorage
+        window.localStorage.setItem('collection', JSON.stringify(this.collection));
+
+        // Reload collection view if it's visible
+        if (this.currentView === 'history-view') {
+            this.loadCollection();
+        }
+
+        // Visual feedback
+        console.log('Added to collection:', text);
+        // TODO: Add toast notification
+    }
+
+    /**
+     * View a collection item in reading mode
+     * @param {number} index - Index in sorted collection array
+     */
+    viewCollectionItem(index) {
+        const sortedCollection = [...this.collection].sort((a, b) => b.date - a.date);
+        const item = sortedCollection[index];
+
+        if (item) {
+            const textInput = document.getElementById('textInput');
+            const result = document.getElementById('result');
+
+            if (textInput) textInput.value = item.text;
+            if (result) result.innerHTML = this.showResult(item.text);
+
+            this.tooltips = initTooltips('[data-bs-toggle="tooltip"]');
+            this.switchView('result-view');
+        }
+    }
+
+    /**
+     * Delete item from collection
+     * @param {number} index - Index in sorted collection array
+     */
+    deleteFromCollection(index) {
+        const sortedCollection = [...this.collection].sort((a, b) => b.date - a.date);
+        const itemToDelete = sortedCollection[index];
+
+        // Find the item in the original collection array
+        const originalIndex = this.collection.findIndex(item =>
+            item.text === itemToDelete.text && item.date === itemToDelete.date
+        );
+
+        if (originalIndex !== -1) {
+            this.collection.splice(originalIndex, 1);
+            window.localStorage.setItem('collection', JSON.stringify(this.collection));
+            this.loadCollection();
+        }
+    }
+
+    /**
+     * Try to load Chinese text from clipboard on startup
+     */
+    async tryLoadFromClipboard() {
+        try {
+            // Check if clipboard API is available
+            if (!navigator.clipboard || !navigator.clipboard.readText) {
+                console.log('Clipboard API not available');
+                return;
+            }
+
+            // Request clipboard permission and read text
+            const clipboardText = await navigator.clipboard.readText();
+
+            if (!clipboardText || clipboardText.trim().length === 0) {
+                return;
+            }
+
+            // Check if text contains Chinese characters
+            const chineseRegex = /[\u4e00-\u9fff]/;
+            if (chineseRegex.test(clipboardText)) {
+                console.log('Chinese text detected in clipboard, loading...');
+                this.text = clipboardText;
+                // The text will be displayed when init() completes
+            }
+        } catch (error) {
+            // Silently fail - clipboard access might be denied
+            console.log('Could not read clipboard:', error.message);
+        }
+    }
+
+    /**
+     * Check if current text is in collection
+     * @returns {boolean} True if text is already in collection
+     */
+    isCurrentTextInCollection() {
+        const textInput = document.getElementById('textInput');
+        const currentText = textInput ? textInput.value : this.text;
+
+        if (!currentText || currentText.trim().length === 0) {
+            return false;
+        }
+
+        return this.collection.some(item => item.text === currentText);
+    }
+
+    /**
+     * Update visibility of "Add to Collection" button based on current text
+     */
+    updateAddToCollectionButton() {
+        const button = document.getElementById('addCurrentToCollection');
+        if (!button) return;
+
+        const textInput = document.getElementById('textInput');
+        const currentText = textInput ? textInput.value : this.text;
+
+        // Only show button if there's text and it's not already in collection
+        if (currentText && currentText.trim().length > 0 && !this.isCurrentTextInCollection()) {
+            button.style.display = 'block';
+        } else {
+            button.style.display = 'none';
+        }
+    }
+
+    /**
+     * Add current text to collection from reading view
+     */
+    addCurrentTextToCollection() {
+        const textInput = document.getElementById('textInput');
+        const currentText = textInput ? textInput.value : this.text;
+
+        if (currentText && currentText.trim().length > 0) {
+            this.addToCollection(currentText);
+            // Update button visibility after adding
+            this.updateAddToCollectionButton();
         }
     }
 }

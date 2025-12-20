@@ -44,8 +44,13 @@
         <!-- Main Content Area -->
         <div id="main-content">
 
-            <!-- Result View (default) -->
+            <!-- Reading View (default) -->
             <div id="result-view" class="view-content active">
+                <div class="reading-header">
+                    <button id="addCurrentToCollection" class="btn btn-sm btn-outline-primary" style="display:none;" title="Ajouter à la collection">
+                        <i class="bi bi-bookmark-plus"></i> Ajouter à la collection
+                    </button>
+                </div>
                 <div id="result" class="result-container"></div>
             </div>
 
@@ -82,10 +87,10 @@
                 </div>
             </div>
 
-            <!-- Phrases View -->
+            <!-- Library View (formerly Phrases) -->
             <div id="phrases-view" class="view-content">
                 <div class="phrases-container">
-                    <h5 class="view-title">Phrases courantes</h5>
+                    <h5 class="view-title">Librairie</h5>
                     <div class="search-box">
                         <input type="text" class="form-control" id="phraseSearch" placeholder="🔍 Rechercher...">
                     </div>
@@ -95,12 +100,12 @@
                 </div>
             </div>
 
-            <!-- History View -->
+            <!-- Collection View (formerly History) -->
             <div id="history-view" class="view-content">
                 <div class="history-container">
-                    <h5 class="view-title">Historique</h5>
+                    <h5 class="view-title">Collection</h5>
                     <div id="history-list" class="history-list">
-                        <!-- History items will be dynamically loaded here -->
+                        <!-- Collection items will be dynamically loaded here -->
                     </div>
                 </div>
             </div>
@@ -111,19 +116,19 @@
         <nav id="bottom-nav" class="bottom-navigation" style="display:none">
             <button class="nav-item active" data-view="result-view">
                 <i class="bi bi-eye"></i>
-                <span>Résultat</span>
+                <span>Lecture</span>
             </button>
             <button class="nav-item" data-view="edit-view">
                 <i class="bi bi-pencil-square"></i>
                 <span>Éditer</span>
             </button>
             <button class="nav-item" data-view="phrases-view">
-                <i class="bi bi-chat-left-text"></i>
-                <span>Phrases</span>
+                <i class="bi bi-book"></i>
+                <span>Librairie</span>
             </button>
             <button class="nav-item" data-view="history-view">
-                <i class="bi bi-clock-history"></i>
-                <span>Historique</span>
+                <i class="bi bi-bookmark-heart"></i>
+                <span>Collection</span>
             </button>
         </nav>
     </div>

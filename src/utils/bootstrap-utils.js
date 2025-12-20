@@ -12,7 +12,10 @@ export function initTooltips(selector = '[data-bs-toggle="tooltip"]') {
   const tooltipElements = document.querySelectorAll(selector);
   return [...tooltipElements].map(el => new Tooltip(el, {
     html: true,
-    placement: 'top'
+    placement: 'top',
+    // Only allow top and bottom positions (no left/right to avoid interfering with reading)
+    fallbackPlacements: ['bottom'],
+    boundary: 'viewport'
   }));
 }
 

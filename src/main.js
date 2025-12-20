@@ -72,6 +72,14 @@ if (parseBtn) {
     });
 }
 
+// Add current text to collection button
+const addCurrentBtn = document.getElementById('addCurrentToCollection');
+if (addCurrentBtn) {
+    addCurrentBtn.addEventListener('click', () => {
+        pr.addCurrentTextToCollection();
+    });
+}
+
 // Clear button click
 const clearBtn = document.getElementById('clearBtn');
 if (clearBtn) {
