@@ -274,24 +274,43 @@ class PinyinReader {
     }
 
     // Pinyin input methods
+
+    // Helper function to remove tone marks from pinyin
+    removeToneMarks(pinyin) {
+        const toneMap = {
+            'ā': 'a', 'á': 'a', 'ǎ': 'a', 'à': 'a',
+            'ē': 'e', 'é': 'e', 'ě': 'e', 'è': 'e',
+            'ī': 'i', 'í': 'i', 'ǐ': 'i', 'ì': 'i',
+            'ō': 'o', 'ó': 'o', 'ǒ': 'o', 'ò': 'o',
+            'ū': 'u', 'ú': 'u', 'ǔ': 'u', 'ù': 'u',
+            'ǖ': 'ü', 'ǘ': 'ü', 'ǚ': 'ü', 'ǜ': 'ü',
+            'ü': 'u', 'ń': 'n', 'ň': 'n', 'ǹ': 'n'
+        };
+
+        return pinyin.toLowerCase().split('').map(char => toneMap[char] || char).join('');
+    }
+
     searchByPinyin(pinyinQuery) {
         if (!pinyinQuery || pinyinQuery.trim() === '') {
             return [];
         }
 
-        // Normalize the pinyin query (convert to lowercase)
-        const query = pinyinQuery.toLowerCase().trim();
+        // Normalize the query: lowercase and remove tone marks/numbers
+        let query = pinyinQuery.toLowerCase().trim();
+        // Remove tone numbers (1-4) if present
+        query = query.replace(/[1-4]/g, '');
+
         const results = [];
 
         // Search through the dictionary
         for (const char in this.dict) {
             const entry = this.dict[char];
             if (entry.p) {
-                // Normalize the pinyin in the dictionary
-                const entryPinyin = entry.p.toLowerCase();
+                // Get the pinyin without tone marks for comparison
+                const entryPinyinNormalized = this.removeToneMarks(entry.p);
 
                 // Check if the pinyin matches (exact or starts with)
-                if (entryPinyin === query || entryPinyin.startsWith(query)) {
+                if (entryPinyinNormalized === query || entryPinyinNormalized.startsWith(query)) {
                     results.push({
                         char: char,
                         pinyin: entry.p,
@@ -314,8 +333,8 @@ class PinyinReader {
             return a.char.length - b.char.length;
         });
 
-        // Limit to top 20 results
-        return results.slice(0, 20);
+        // Limit to top 10 results
+        return results.slice(0, 10);
     }
 
     displayPinyinSuggestions(pinyinQuery) {
