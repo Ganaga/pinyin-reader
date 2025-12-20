@@ -1,1 +1,135 @@
-<script>window.location.href='client'</script>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+    <!-- PWA Meta Tags -->
+    <meta name="description" content="Application d'apprentissage du chinois avec traduction automatique en pinyin et dialogues par niveau HSK">
+    <meta name="theme-color" content="#737cfa">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Pinyin Reader">
+
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" sizes="72x72" href="/icons/icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="96x96" href="/icons/icon-96x96.png">
+    <link rel="apple-touch-icon" sizes="128x128" href="/icons/icon-128x128.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/icons/icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/icons/icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="192x192" href="/icons/icon-192x192.png">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-72x72.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/icon-72x72.png">
+
+    <!-- Manifest -->
+    <link rel="manifest" href="/manifest.json">
+
+    <title>Pinyin Reader - Lecteur de Chinois</title>
+</head>
+
+<body>
+    <div class="container">
+        <div id="loader">
+            <span>Loading...</span>
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div id="main-content">
+
+            <!-- Result View (default) -->
+            <div id="result-view" class="view-content active">
+                <div id="result" class="result-container"></div>
+            </div>
+
+            <!-- Edit View -->
+            <div id="edit-view" class="view-content">
+                <div class="edit-container">
+                    <h5 class="view-title">Nouveau texte</h5>
+
+                    <!-- Pinyin Input Tool -->
+                    <div class="pinyin-input-tool">
+                        <div class="input-mode-toggle">
+                            <button type="button" id="toggleInputMode" class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-keyboard"></i> Mode Pinyin
+                            </button>
+                        </div>
+
+                        <div id="pinyinInputSection" class="pinyin-section" style="display:none">
+                            <label class="form-label">Saisissez en pinyin (ex: ni3hao3)</label>
+                            <input type="text" class="form-control" id="pinyinInput"
+                                   placeholder="Tapez en pinyin avec les tons (1-4)...">
+                            <div id="pinyinSuggestions" class="pinyin-suggestions"></div>
+                        </div>
+                    </div>
+
+                    <textarea class="form-control" id="textInput" placeholder="Saisissez votre texte chinois ici..."></textarea>
+                    <div class="button-group">
+                        <button type="button" id="clearBtn" class="btn btn-outline-secondary">
+                            <i class="bi bi-x-circle"></i> Effacer
+                        </button>
+                        <button type="button" id="parse" class="btn btn-primary disabled">
+                            <i class="bi bi-translate"></i> Traduire
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phrases View -->
+            <div id="phrases-view" class="view-content">
+                <div class="phrases-container">
+                    <h5 class="view-title">Phrases courantes</h5>
+                    <div class="search-box">
+                        <input type="text" class="form-control" id="phraseSearch" placeholder="🔍 Rechercher...">
+                    </div>
+                    <div id="phrases-list" class="phrases-list">
+                        <!-- Phrases will be dynamically loaded here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- History View -->
+            <div id="history-view" class="view-content">
+                <div class="history-container">
+                    <h5 class="view-title">Historique</h5>
+                    <div id="history-list" class="history-list">
+                        <!-- History items will be dynamically loaded here -->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Bottom Navigation Bar -->
+        <nav id="bottom-nav" class="bottom-navigation" style="display:none">
+            <button class="nav-item active" data-view="result-view">
+                <i class="bi bi-eye"></i>
+                <span>Résultat</span>
+            </button>
+            <button class="nav-item" data-view="edit-view">
+                <i class="bi bi-pencil-square"></i>
+                <span>Éditer</span>
+            </button>
+            <button class="nav-item" data-view="phrases-view">
+                <i class="bi bi-chat-left-text"></i>
+                <span>Phrases</span>
+            </button>
+            <button class="nav-item" data-view="history-view">
+                <i class="bi bi-clock-history"></i>
+                <span>Historique</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- Vite entry point -->
+    <script type="module" src="/src/main.js"></script>
+</body>
+
+</html>

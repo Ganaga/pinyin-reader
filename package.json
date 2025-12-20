@@ -1,0 +1,22 @@
+{
+  "name": "pinyin-reader",
+  "version": "2.0.0",
+  "description": "Application d'apprentissage du chinois avec traduction automatique en pinyin",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "generate-dict": "node node/parser.js"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0"
+  },
+  "dependencies": {
+    "bootstrap": "^5.3.2",
+    "bootstrap-icons": "^1.11.0"
+  },
+  "keywords": ["chinese", "pinyin", "learning", "education", "pwa"],
+  "author": "",
+  "license": "MIT"
+}

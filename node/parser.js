@@ -31,7 +31,7 @@ axios.get('https://raw.githubusercontent.com/clem109/hsk-vocabulary/master/hsk-v
                             dictIndex[e.simplified] = entry;
                         });
 
-                        fs.writeFile('../client/pinyin.json', JSON.stringify(dictIndex), err => {
+                        fs.writeFile('../public/pinyin.json', JSON.stringify(dictIndex), err => {
                             if (err) {
                                 console.error(err)
                                 return

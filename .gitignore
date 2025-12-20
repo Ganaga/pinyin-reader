@@ -151,3 +151,7 @@ dist
 server/src/main/resources/application.properties
 server/setenv.bat
 node/cedict_ts.u8
+
+# Vite specific
+dist-ssr/
+*.local
