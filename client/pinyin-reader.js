@@ -287,7 +287,7 @@ class PinyinReader {
             'ü': 'u', 'ń': 'n', 'ň': 'n', 'ǹ': 'n'
         };
 
-        return pinyin.toLowerCase().split('').map(char => toneMap[char] || char).join('');
+        return pinyin.toLowerCase().split('').map(char => toneMap[char] || char).join('').replace(/\s+/g, '');
     }
 
     searchByPinyin(pinyinQuery) {
