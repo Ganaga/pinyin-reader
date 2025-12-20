@@ -12,7 +12,6 @@
       "sourceMap": true,
       "removeComments": false,
       "alwaysStrict": true,
-      "suppressImplicitAnyIndexErrors": true
     },
     "include": ["src/**/*", "./src/custom.d.ts"]
   }
