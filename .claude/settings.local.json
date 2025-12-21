@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm start)",
+      "Bash(npm install:*)",
+      "Bash(cat:*)",
+      "Bash(git -C \"C:\\\\dev\\\\git\\\\pinyin-reader\" log --oneline --all)",
+      "Bash(git -C \"C:\\\\dev\\\\git\\\\pinyin-reader\" branch -a)",
+      "Bash(git -C \"C:\\\\dev\\\\git\\\\pinyin-reader\" remote -v)",
+      "Bash(git -C \"C:\\\\dev\\\\git\\\\pinyin-reader\" log --all --oneline --grep=\"deploy\\\\|github\\\\|pages\\\\|build\" -i)",
+      "Bash(npm run dev:*)",
+      "Bash(git -C \"C:\\\\dev\\\\git\\\\pinyin-reader\" status --short)",
+      "Bash(git -C:*)",
+      "Bash(npm run build:*)",
+      "Bash(npm run generate-dict:*)",
+      "Bash(node parser.js:*)",
+      "Bash(node -e:*)",
+      "Bash(git add:*)"
+    ]
+  }
+}

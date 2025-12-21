@@ -145,12 +145,20 @@ export class PinyinReader {
         let result = '<div class="row"><div class="col sm">';
         parts.forEach(e => {
             if (e.p) {
-                let tooltip = `<b>${e.p}</b><p>${e.d}</p>`;
-                if (e.h) tooltip += `<p>HSK${e.h}</p>`;
+                // Build tooltip with proper HTML escaping
+                let tooltip = `<b>${e.p}</b>`;
+                if (e.d) {
+                    tooltip += `<br/>${e.d}`;
+                }
+                if (e.h) {
+                    tooltip += `<br/><small>HSK ${e.h}</small>`;
+                }
+
+                // Escape quotes in tooltip for HTML attribute
+                const escapedTooltip = tooltip.replace(/"/g, '&quot;');
+
                 let color = e.h ? 'color: ' + colors[e.h] : '';
-                result += `
-                <span class="label label-defaul charblock" style="${color}" href="#" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="top" title="${tooltip}">${e.s}</span>
-                `;
+                result += `<span class="label label-defaul charblock" style="${color}" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="top" title="${escapedTooltip}">${e.s}</span>`;
             } else {
                 result += `<span class="label label-default">${e.s}</span>`;
             }
@@ -524,19 +532,37 @@ export class PinyinReader {
                 const entryPinyinNormalized = this.removeToneMarks(entry.p);
 
                 // Check if the pinyin matches (exact or starts with)
-                if (entryPinyinNormalized === query || entryPinyinNormalized.startsWith(query)) {
+                const isExactMatch = entryPinyinNormalized === query;
+                const isStartsWith = entryPinyinNormalized.startsWith(query);
+
+                if (isExactMatch || isStartsWith) {
+                    // Get frequency rank from dictionary (lower is more common)
+                    const frequencyRank = entry.f || 999;
+
                     results.push({
                         char: char,
                         pinyin: entry.p,
                         definitions: entry.d,
-                        hsk: entry.h
+                        hsk: entry.h,
+                        isExactMatch: isExactMatch,
+                        frequencyRank: frequencyRank
                     });
                 }
             }
         }
 
-        // Sort by HSK level (lower first) and then by character length
+        // Sort: exact matches first, then by frequency, then by HSK level, then by character length
         results.sort((a, b) => {
+            // 1. Prioritize exact matches
+            if (a.isExactMatch && !b.isExactMatch) return -1;
+            if (!a.isExactMatch && b.isExactMatch) return 1;
+
+            // 2. Within same match type, sort by frequency (lower rank = more common)
+            if (a.frequencyRank !== b.frequencyRank) {
+                return a.frequencyRank - b.frequencyRank;
+            }
+
+            // 3. Then sort by HSK level (lower first)
             if (a.hsk && b.hsk) {
                 return a.hsk - b.hsk;
             } else if (a.hsk) {
@@ -544,6 +570,8 @@ export class PinyinReader {
             } else if (b.hsk) {
                 return 1;
             }
+
+            // 4. Finally by character length (single chars before words)
             return a.char.length - b.char.length;
         });
 
