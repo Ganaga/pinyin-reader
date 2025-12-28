@@ -15,7 +15,11 @@
       "Bash(npm run generate-dict:*)",
       "Bash(node parser.js:*)",
       "Bash(node -e:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(node analyze-ni.js:*)",
+      "Bash(node analyze-ni.cjs:*)"
     ]
   }
 }
