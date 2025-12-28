@@ -168,6 +168,12 @@ export class PinyinReader {
 
         let result = '<div class="row"><div class="col sm">';
         parts.forEach(e => {
+            // Handle newline characters
+            if (e.s === '\n') {
+                result += '</div></div><div class="row"><div class="col sm">';
+                return;
+            }
+
             if (e.p) {
                 // Build tooltip with proper HTML escaping
                 let tooltip = `<b>${e.p}</b>`;
