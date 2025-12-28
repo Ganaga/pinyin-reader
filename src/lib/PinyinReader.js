@@ -44,8 +44,10 @@ export class PinyinReader {
             window.localStorage.setItem('collection', JSON.stringify(this.collection));
         }
 
-        // Try to read from clipboard on startup
-        await this.tryLoadFromClipboard();
+        // Try to read from clipboard on startup - only if no saved text exists
+        if (!this.text || this.text === '您好，这个应用程序可以帮助您学习中文。它允许您将文本翻译成带有相关翻译的拼音。') {
+            await this.tryLoadFromClipboard();
+        }
 
         // Load dictionary with progress tracking
         try {
@@ -201,13 +203,19 @@ export class PinyinReader {
         if (viewId === 'result-view') {
             const textInput = document.getElementById('textInput');
             if (textInput && textInput.value.trim()) {
+                const currentText = textInput.value;
                 const result = document.getElementById('result');
                 if (result) {
-                    result.innerHTML = this.showResult(textInput.value);
+                    result.innerHTML = this.showResult(currentText);
+                    // Update this.text to keep it in sync
+                    this.text = currentText;
+                    window.localStorage.setItem('text', currentText);
                     // Initialize tooltips for the new content
                     if (window.initTooltips) {
                         window.initTooltips('[data-bs-toggle="tooltip"]');
                     }
+                    // Update "Add to Collection" button visibility
+                    this.updateAddToCollectionButton();
                 }
             }
         }
@@ -754,10 +762,8 @@ export class PinyinReader {
         // Save to localStorage
         window.localStorage.setItem('collection', JSON.stringify(this.collection));
 
-        // Reload collection view if it's visible
-        if (this.currentView === 'history-view') {
-            this.loadCollection();
-        }
+        // Always reload collection view to update the UI
+        this.loadCollection();
 
         // Visual feedback
         console.log('Added to collection:', text);
