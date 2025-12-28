@@ -5,6 +5,7 @@
 import { BUILT_IN_PHRASES } from '../data/phrases.js';
 import { initTooltips } from '../utils/bootstrap-utils.js';
 import { i18n } from '../utils/i18n.js';
+import { Modal } from 'bootstrap';
 
 export class PinyinReader {
     constructor() {
@@ -907,7 +908,7 @@ export class PinyinReader {
 
         // Get modal element and show it
         const modalElement = document.getElementById('shareModal');
-        const modal = new bootstrap.Modal(modalElement);
+        const modal = new Modal(modalElement);
         modal.show();
 
         // Add copy URL functionality
