@@ -98,12 +98,12 @@ const translations = {
     // Views
     readingView: 'Lecture',
     editView: 'Éditer',
-    collectionView: 'Collection',
+    collectionView: 'Ma collection',
     libraryView: 'Librairie',
     helpView: 'Aide',
 
     // Reading view
-    addToCollection: 'Ajouter à la collection',
+    addToCollection: 'Ajouter à ma collection',
 
     // Edit view
     newText: 'Nouveau texte',
@@ -119,7 +119,7 @@ const translations = {
     search: 'Rechercher...',
 
     // Collection view
-    collection: 'Collection',
+    collection: 'Ma collection',
     view: 'Voir',
     share: 'Partager',
     delete: 'Supprimer',
@@ -131,12 +131,12 @@ const translations = {
     loading: 'Chargement...',
     loadingDictionary: 'Chargement du dictionnaire...',
     errorLoadingDictionary: 'Erreur de chargement du dictionnaire',
-    textAddedToCollection: 'Texte ajouté à la collection !',
-    textAlreadyInCollection: 'Ce texte est déjà dans votre collection',
+    textAddedToCollection: 'Texte ajouté à ma collection !',
+    textAlreadyInCollection: 'Ce texte est déjà dans ma collection',
     confirmDelete: 'Êtes-vous sûr de vouloir supprimer cet élément ?',
 
     // Empty states
-    emptyCollection: 'Votre collection est vide',
+    emptyCollection: 'Ma collection est vide',
     emptyCollectionDesc: 'Ajoutez des textes depuis la vue lecture ou la librairie',
     noResults: 'Aucun résultat trouvé',
     noSuggestions: 'Aucune suggestion trouvée',
@@ -164,7 +164,7 @@ const translations = {
     helpReadingDesc: 'Affiche votre texte chinois avec la prononciation Pinyin et les définitions des mots. Survolez les caractères pour voir les détails.',
     helpEditTitle: '✏️ Vue Éditer',
     helpEditDesc: 'Saisissez ou collez du texte chinois. Utilisez le Mode Pinyin pour taper des caractères chinois en pinyin (ex: ni3hao3 → 你好).',
-    helpCollectionTitle: '💾 Collection',
+    helpCollectionTitle: '💾 Ma collection',
     helpCollectionDesc: 'Enregistrez vos textes favoris pour plus tard. Consultez ou supprimez les éléments sauvegardés.',
     helpLibraryTitle: '📚 Librairie',
     helpLibraryDesc: 'Parcourez les dialogues pré-construits organisés par niveau HSK. Cliquez sur les phrases pour les voir en mode Lecture.',
