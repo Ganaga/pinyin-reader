@@ -18,8 +18,9 @@ i18n.updateUI();
 // Initialize the application
 const pr = new PinyinReader();
 
-// Make pr globally accessible for debugging (optional)
+// Make pr and initTooltips globally accessible
 window.pr = pr;
+window.initTooltips = initTooltips;
 
 // Initialize the application when dictionary is loaded
 pr.init(() => {

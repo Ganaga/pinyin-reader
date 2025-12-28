@@ -197,6 +197,21 @@ export class PinyinReader {
      * @param {string} viewId - ID of the view to show
      */
     switchView(viewId) {
+        // If switching to result view, update content with current text
+        if (viewId === 'result-view') {
+            const textInput = document.getElementById('textInput');
+            if (textInput && textInput.value.trim()) {
+                const result = document.getElementById('result');
+                if (result) {
+                    result.innerHTML = this.showResult(textInput.value);
+                    // Initialize tooltips for the new content
+                    if (window.initTooltips) {
+                        window.initTooltips('[data-bs-toggle="tooltip"]');
+                    }
+                }
+            }
+        }
+
         // Update view visibility
         document.querySelectorAll('.view-content').forEach(el => {
             el.classList.remove('active');
