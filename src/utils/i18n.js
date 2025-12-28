@@ -34,7 +34,11 @@ const translations = {
     // Collection view
     collection: 'Collection',
     view: 'View',
+    share: 'Share',
     delete: 'Delete',
+    shareItem: 'Share Item',
+    copyLink: 'Copy Link',
+    copied: 'Copied!',
 
     // Messages
     loading: 'Loading...',
@@ -117,7 +121,11 @@ const translations = {
     // Collection view
     collection: 'Collection',
     view: 'Voir',
+    share: 'Partager',
     delete: 'Supprimer',
+    shareItem: 'Partager l\'élément',
+    copyLink: 'Copier le lien',
+    copied: 'Copié !',
 
     // Messages
     loading: 'Chargement...',

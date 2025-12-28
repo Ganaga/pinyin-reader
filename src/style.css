@@ -667,3 +667,42 @@ body {
     padding: 10px;
     text-align: left;
 }
+
+/* Share modal */
+.qr-code-image {
+    max-width: 300px;
+    width: 100%;
+    height: auto;
+    margin: 20px auto;
+    display: block;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+}
+
+.share-text-preview {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    font-style: italic;
+}
+
+.share-url-container {
+    margin-top: 20px;
+}
+
+.share-url-container input {
+    font-size: 0.85rem;
+    text-align: center;
+}
+
+/* Collection actions - ensure buttons fit */
+.collection-actions {
+    display: flex;
+    gap: 5px;
+    flex-shrink: 0;
+}
+
+.collection-actions .btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+}

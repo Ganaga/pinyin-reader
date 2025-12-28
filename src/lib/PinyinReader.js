@@ -22,18 +22,39 @@ export class PinyinReader {
      * @param {Function} callback - Called when dictionary is loaded
      */
     async init(callback) {
-        // Load text and collection from localStorage
-        this.text = window.localStorage.getItem('text');
-        if (!this.text) {
-            this.text = '您好，这个应用程序可以帮助您学习中文。它允许您将文本翻译成带有相关翻译的拼音。';
-        }
-
-        // Load collection (new storage key)
+        // Load collection first (needed for URL parameter handling)
         const collectionString = window.localStorage.getItem('collection');
         if (collectionString) {
             this.collection = JSON.parse(collectionString);
         } else {
             this.collection = [];
+        }
+
+        // Check for shared text in URL parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const sharedText = urlParams.get('t');
+
+        // Load text from URL parameter, localStorage, or default
+        if (sharedText) {
+            this.text = decodeURIComponent(sharedText);
+            // Add shared text to collection automatically
+            const exists = this.collection.some(item => item.text === this.text);
+            if (!exists) {
+                this.collection.unshift({
+                    text: this.text,
+                    date: Date.now()
+                });
+                window.localStorage.setItem('collection', JSON.stringify(this.collection));
+            }
+            // Save as last viewed text
+            window.localStorage.setItem('text', this.text);
+            // Clean URL (remove parameter)
+            window.history.replaceState({}, document.title, window.location.pathname);
+        } else {
+            this.text = window.localStorage.getItem('text');
+            if (!this.text) {
+                this.text = '您好，这个应用程序可以帮助您学习中文。它允许您将文本翻译成带有相关翻译的拼音。';
+            }
         }
 
         // Migrate old history to collection if exists
@@ -436,6 +457,9 @@ export class PinyinReader {
                         <button class="btn btn-sm btn-primary collection-view" data-view-index="${index}" title="${i18n.t('view')}">
                             <i class="bi bi-eye"></i>
                         </button>
+                        <button class="btn btn-sm btn-info collection-share" data-share-index="${index}" title="${i18n.t('share')}">
+                            <i class="bi bi-share"></i>
+                        </button>
                         <button class="btn btn-sm btn-outline-danger collection-delete" data-delete-index="${index}" title="${i18n.t('delete')}">
                             <i class="bi bi-trash"></i>
                         </button>
@@ -451,6 +475,15 @@ export class PinyinReader {
                 e.stopPropagation();
                 const index = parseInt(btn.dataset.viewIndex, 10);
                 this.viewCollectionItem(index);
+            });
+        });
+
+        // Add event listeners for "Share" buttons
+        document.querySelectorAll('.collection-share').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const index = parseInt(btn.dataset.shareIndex, 10);
+                this.shareCollectionItem(index);
             });
         });
 
@@ -808,6 +841,93 @@ export class PinyinReader {
             window.localStorage.setItem('collection', JSON.stringify(this.collection));
             this.loadCollection();
         }
+    }
+
+    /**
+     * Share collection item with QR code
+     * @param {number} index - Index in sorted collection array
+     */
+    shareCollectionItem(index) {
+        const sortedCollection = [...this.collection].sort((a, b) => b.date - a.date);
+        const item = sortedCollection[index];
+
+        if (!item) return;
+
+        // Create share URL with text parameter
+        const baseUrl = 'https://ganaga.github.io/pinyin-reader';
+        const encodedText = encodeURIComponent(item.text);
+        const shareUrl = `${baseUrl}?t=${encodedText}`;
+
+        // Generate QR code URL using QR Server API
+        const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(shareUrl)}`;
+
+        // Show modal with QR code
+        this.showShareModal(shareUrl, qrCodeUrl, item.text);
+    }
+
+    /**
+     * Show share modal with QR code
+     * @param {string} shareUrl - URL to share
+     * @param {string} qrCodeUrl - QR code image URL
+     * @param {string} text - Text being shared
+     */
+    showShareModal(shareUrl, qrCodeUrl, text) {
+        // Create modal HTML
+        const modalHtml = `
+            <div class="modal fade" id="shareModal" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">${i18n.t('shareItem')}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body text-center">
+                            <p class="share-text-preview">${text.substring(0, 50)}${text.length > 50 ? '...' : ''}</p>
+                            <img src="${qrCodeUrl}" alt="QR Code" class="qr-code-image" />
+                            <div class="share-url-container mt-3">
+                                <input type="text" class="form-control" value="${shareUrl}" readonly id="shareUrlInput">
+                                <button class="btn btn-primary btn-sm mt-2" id="copyUrlBtn">
+                                    <i class="bi bi-clipboard"></i> ${i18n.t('copyLink')}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Remove existing modal if any
+        const existingModal = document.getElementById('shareModal');
+        if (existingModal) {
+            existingModal.remove();
+        }
+
+        // Add modal to body
+        document.body.insertAdjacentHTML('beforeend', modalHtml);
+
+        // Get modal element and show it
+        const modalElement = document.getElementById('shareModal');
+        const modal = new bootstrap.Modal(modalElement);
+        modal.show();
+
+        // Add copy URL functionality
+        const copyBtn = document.getElementById('copyUrlBtn');
+        const urlInput = document.getElementById('shareUrlInput');
+
+        copyBtn.addEventListener('click', () => {
+            urlInput.select();
+            navigator.clipboard.writeText(shareUrl).then(() => {
+                copyBtn.innerHTML = `<i class="bi bi-check"></i> ${i18n.t('copied')}`;
+                setTimeout(() => {
+                    copyBtn.innerHTML = `<i class="bi bi-clipboard"></i> ${i18n.t('copyLink')}`;
+                }, 2000);
+            });
+        });
+
+        // Clean up modal when hidden
+        modalElement.addEventListener('hidden.bs.modal', () => {
+            modalElement.remove();
+        });
     }
 
     /**
