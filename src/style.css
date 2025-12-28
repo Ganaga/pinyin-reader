@@ -167,17 +167,17 @@ body {
 
 .pinyin-suggestions {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    gap: 8px;
-    max-height: 300px;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 6px;
+    max-height: 450px;
     overflow-y: auto;
 }
 
 .suggestion-item {
     background: white;
-    border: 2px solid #e0e0e0;
-    border-radius: 8px;
-    padding: 10px;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 6px 4px;
     cursor: pointer;
     transition: all 0.2s ease;
     text-align: center;
@@ -191,23 +191,23 @@ body {
 }
 
 .suggestion-char {
-    font-size: 1.8rem;
+    font-size: 1.3rem;
     font-weight: 600;
     color: #333;
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 2px;
 }
 
 .suggestion-pinyin {
-    font-size: 0.85rem;
+    font-size: 0.7rem;
     color: #737cfa;
     font-weight: 500;
     display: block;
-    margin-bottom: 3px;
+    margin-bottom: 2px;
 }
 
 .suggestion-definition {
-    font-size: 0.75rem;
+    font-size: 0.65rem;
     color: #999;
     display: block;
     overflow: hidden;

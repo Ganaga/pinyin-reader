@@ -602,8 +602,8 @@ export class PinyinReader {
             return a.char.length - b.char.length;
         });
 
-        // Limit to top 10 results
-        return results.slice(0, 10);
+        // Limit to top 40 results
+        return results.slice(0, 40);
     }
 
     /**
