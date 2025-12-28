@@ -551,18 +551,30 @@ export class PinyinReader {
             }
         }
 
-        // Sort: exact matches first, then by frequency, then by HSK level, then by character length
+        // Sort: exact matches first, then prioritize single chars, HSK level, and frequency
         results.sort((a, b) => {
             // 1. Prioritize exact matches
             if (a.isExactMatch && !b.isExactMatch) return -1;
             if (!a.isExactMatch && b.isExactMatch) return 1;
 
-            // 2. Within same match type, sort by frequency (lower rank = more common)
+            // 2. Within same match type, prioritize single characters
+            const aIsSingle = a.char.length === 1;
+            const bIsSingle = b.char.length === 1;
+            if (aIsSingle && !bIsSingle) return -1;
+            if (!aIsSingle && bIsSingle) return 1;
+
+            // 3. Prioritize HSK 1-2 (beginner level) strongly
+            const aIsBeginnerHSK = a.hsk && a.hsk <= 2;
+            const bIsBeginnerHSK = b.hsk && b.hsk <= 2;
+            if (aIsBeginnerHSK && !bIsBeginnerHSK) return -1;
+            if (!aIsBeginnerHSK && bIsBeginnerHSK) return 1;
+
+            // 4. Then sort by frequency (lower rank = more common)
             if (a.frequencyRank !== b.frequencyRank) {
                 return a.frequencyRank - b.frequencyRank;
             }
 
-            // 3. Then sort by HSK level (lower first)
+            // 5. Then sort by HSK level (lower first)
             if (a.hsk && b.hsk) {
                 return a.hsk - b.hsk;
             } else if (a.hsk) {
@@ -571,7 +583,7 @@ export class PinyinReader {
                 return 1;
             }
 
-            // 4. Finally by character length (single chars before words)
+            // 6. Finally by character length
             return a.char.length - b.char.length;
         });
 

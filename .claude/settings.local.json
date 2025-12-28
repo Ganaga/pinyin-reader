@@ -19,7 +19,8 @@
       "Bash(git commit:*)",
       "Bash(git push:*)",
       "Bash(node analyze-ni.js:*)",
-      "Bash(node analyze-ni.cjs:*)"
+      "Bash(node analyze-ni.cjs:*)",
+      "Bash(node test-search.cjs:*)"
     ]
   }
 }
